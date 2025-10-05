@@ -93,12 +93,16 @@ ecommerce-app/
 │   │   ├── hooks/
 │   │   │   ├── useCategory.ts
 │   │   │   └── useProduct.ts
+│   │   ├── icons/
+│   │   │   ├── Bag.tsx
+│   │   │   └── Cart.tsx
 │   │   ├── Categories.tsx
 │   │   ├── CartSidebar.tsx
 │   │   ├── Footer.tsx
 │   │   ├── MobileFilters.tsx
 │   │   ├── Navbar.tsx
 │   │   ├── ProductGrid.tsx
+│   │   ├── Ratting.tsx
 │   │   └── SortMenu.tsx
 │   │
 │   ├── pages/               # Page-level components
@@ -111,16 +115,18 @@ ecommerce-app/
 │   │   └── api.ts
 │   │
 │   ├── store/               # MobX store
-│   │   ├── index.ts
-│   │   └── types.ts
+│   │   └── index.ts
+│   │
+│   │
+│   ├── type/                # ts interfaces
+│   │   └── index.ts
 │   │
 │   ├── utils/               # Utility functions
 │   │   ├── constants.ts
 │   │   └── index.ts
 │   │
 │   ├── App.tsx              # Main app component
-│   ├── index.tsx            # Entry point
-│   └── index.css            # Global styles
+│   └── index.tsx            # Entry point
 │
 ├── package.json
 └── README.md
