@@ -6,19 +6,15 @@ import {
 } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { classNames } from "../utils";
-function MobileFilters({
+import { MobileFiltersProps } from "../types";
+import { FC } from "react";
+const MobileFilters: FC<MobileFiltersProps> = ({
   open,
   setOpen,
   categories,
   categoryParam,
   updateQuery,
-}: {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  categories: string[];
-  categoryParam?: string;
-  updateQuery: (key: string, value?: string) => void;
-}) {
+}) => {
   return (
     <Dialog
       open={open}
@@ -61,7 +57,7 @@ function MobileFilters({
                           onClick={() => updateQuery("category")}
                           className={classNames(
                             !categoryParam ? "font-bold" : "",
-                            "cursor-pointer p-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
+                            "cursor-pointer p-2.5 focus:outline-none hover:bg-gray-50 duration-300 cursor-pointer focus:ring-2 focus:ring-indigo-500 rounded"
                           )}
                         >
                           All
@@ -74,7 +70,7 @@ function MobileFilters({
                             onClick={() => updateQuery("category", cat)}
                             className={classNames(
                               categoryParam === cat ? "font-bold" : "",
-                              "cursor-pointer p-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
+                              "cursor-pointer p-2.5 focus:outline-none hover:bg-gray-50 duration-300 cursor-pointer capitalize focus:ring-2 focus:ring-indigo-500 rounded"
                             )}
                           >
                             {cat}
@@ -91,5 +87,5 @@ function MobileFilters({
       </div>
     </Dialog>
   );
-}
+};
 export default MobileFilters;

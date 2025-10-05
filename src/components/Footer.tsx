@@ -1,23 +1,10 @@
-import React from "react";
+import { FC } from "react";
 
-const Footer: React.FC = () => {
+const Footer: FC = () => {
   return (
     <footer
-      className="
-        w-full
-        py-4
-        text-center
-        bg-gray-800
-        text-gray-50
-        border-t
-        border-gray-300
-        fixed
-        bottom-0
-        left-0
-        font-medium
-        shadow
-        z-40
-      "
+      aria-label="Footer"
+      className="w-full py-4 text-center bg-gray-800 text-gray-50 border-t border-gray-300 fixed bottom-0 left-0 font-medium shadow z-40"
     >
       <span className="block">
         E-commerce App{" "}

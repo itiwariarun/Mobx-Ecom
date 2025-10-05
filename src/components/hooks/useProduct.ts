@@ -1,4 +1,3 @@
-// hooks/useProducts.ts
 import { useEffect, useState } from "react";
 import { Product } from "../../types";
 import { fetchProducts } from "../../services/api";

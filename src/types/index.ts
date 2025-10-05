@@ -1,10 +1,10 @@
-export type User = {
+export interface User {
   id: string;
   name: string;
   email: string;
 };
 
-export type Product = {
+export interface Product {
   qty: number;
   image: string;
   title: string;
@@ -19,7 +19,7 @@ export type Product = {
   }
 };
 
-export type CartItem = {
+export interface CartItem {
   image: string;
   title: string | undefined;
   qty?: number;
@@ -33,10 +33,24 @@ export interface Cart {
   totalAmount: number;
 }
 
-export type Order = {
+export interface Order {
   id: number;
   userId: string;
   items: CartItem[];
   totalAmount: number;
   createdAt: Date;
 };
+
+export interface MobileFiltersProps{
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  categories: string[];
+  categoryParam?: string;
+  updateQuery: (key: string, value?: string) => void;
+}
+
+export interface CategoriesProps{
+  categories: string[];
+  categoryParam?: string;
+  updateQuery: (key: string, value?: string) => void;
+}

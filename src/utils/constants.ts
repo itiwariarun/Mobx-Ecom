@@ -11,3 +11,5 @@ export const pageTransition: Transition<any> = {
   ease: "anticipate",
   duration: 0.4,
 };
+ export const navigation = [{ name: "Home", href: "/", current: true }];
+ export const skeletons = Array.from({ length: 6 });

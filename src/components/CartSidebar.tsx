@@ -1,36 +1,51 @@
-"use client";
-
-import * as React from "react";
-import { useState } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   Dialog,
   DialogBackdrop,
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import { ShoppingCartIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import { observer } from "mobx-react-lite";
 import { cartStore } from "../store";
-import { Link, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import BagIcon from "./icons/Bag";
 
-const CartSide: React.FC = observer(() => {
+const CartSide: FC = observer(() => {
   const nav = useNavigate();
+  const location = useLocation();
   const [cartOpen, setCartOpen] = useState(false);
+  const [prevCartCount, setPrevCartCount] = useState(cartStore.count);
+
   const onClickCheckout = (router: string) => {
     setCartOpen(false);
     nav(router);
   };
+  const isProductDetails = /^\/product\/\d+\/details$/.test(location.pathname);
 
+  useEffect(() => {
+    if (cartStore.count > prevCartCount && isProductDetails) {
+      const timeout = setTimeout(() => {
+        setCartOpen(true);
+      }, 1300);
+      return () => clearTimeout(timeout);
+    }
+    setPrevCartCount(cartStore.count);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cartStore.count, prevCartCount, isProductDetails]);
   return (
     <>
       <button
-        className="w-fit cursor-pointer ml-auto"
+        data-quantity={cartStore.count}
         onClick={() => setCartOpen(true)}
+        className="relative btn-cart flex ml-auto items-center cursor-pointer justify-center w-12 h-12 rounded-lg bg-transparent border-none group"
       >
-        <ShoppingCartIcon className="h-6 w-6 text-white" />
-        <span className="sr-only">cart</span>
+        <BagIcon />
+        <span className="absolute top-1 mt-1 text-white text-base font-sans opacity-0 invisible transition-all duration-200 ease-linear group-hover:visible group-hover:opacity-100 group-hover:mt-0">
+          {cartStore.count}
+        </span>
       </button>
-      {/* Cart Sidebar */}
+
       <Dialog
         open={cartOpen}
         onClose={setCartOpen}
@@ -135,12 +150,12 @@ const CartSide: React.FC = observer(() => {
                         <p>${cartStore.total.toFixed(2)}</p>
                       </div>
                       <div className="mt-6">
-                        <Link
-                          to="/cart"
-                          className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-xs hover:bg-indigo-700"
+                        <button
+                          onClick={() => onClickCheckout("/cart")}
+                          className="flex items-center justify-center w-full cursor-pointer rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-xs hover:bg-indigo-700"
                         >
                           Go To Cart
-                        </Link>
+                        </button>
                       </div>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>
