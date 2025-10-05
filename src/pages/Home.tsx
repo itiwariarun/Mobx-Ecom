@@ -16,7 +16,7 @@ const Home = () => {
   const categoryParam = getCategoryParam(location.search);
   const sortParam = getSortParam(location.search);
 
-  const categories = useCategories();
+  const { categories, loading: catLoad } = useCategories();
   const { products, loading } = useProducts(categoryParam, sortParam);
   const sortOptions = getSortOptions(sortParam);
 
@@ -75,6 +75,7 @@ const Home = () => {
           aria-label="Product list and categories"
         >
           <Categories
+            loading={catLoad}
             categories={categories}
             categoryParam={categoryParam}
             updateQuery={updateQuery}

@@ -62,7 +62,7 @@ const ProductDetail: FC = () => {
   return (
     <>
       <p
-        className="text-lg max-w-7xl px-8 mx-auto pt-8 capitalize font-medium text-indigo-600 mb-2"
+        className="text-lg max-w-7xl px-6 mx-auto pt-8 capitalize font-medium text-indigo-600 mb-2"
         aria-label={`Category: ${product.category}`}
       >
         <Link

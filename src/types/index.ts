@@ -2,7 +2,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
-};
+}
 
 export interface Product {
   qty: number;
@@ -16,8 +16,8 @@ export interface Product {
   rating: {
     rate: number;
     count: number;
-  }
-};
+  };
+}
 
 export interface CartItem {
   image: string;
@@ -26,7 +26,7 @@ export interface CartItem {
   id: number;
   price: number;
   name?: string;
-};
+}
 
 export interface Cart {
   items: CartItem[];
@@ -39,9 +39,9 @@ export interface Order {
   items: CartItem[];
   totalAmount: number;
   createdAt: Date;
-};
+}
 
-export interface MobileFiltersProps{
+export interface MobileFiltersProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   categories: string[];
@@ -49,8 +49,9 @@ export interface MobileFiltersProps{
   updateQuery: (key: string, value?: string) => void;
 }
 
-export interface CategoriesProps{
+export interface CategoriesProps {
   categories: string[];
   categoryParam?: string;
+  loading?: boolean;
   updateQuery: (key: string, value?: string) => void;
 }

@@ -12,68 +12,70 @@ const App: React.FC = () => {
   const location = useLocation();
 
   return (
-    <>
+    <div className="min-h-screen h-full grid content-between">
       <Navbar />
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route
-            path="/"
-            element={
-              <motion.div
-                initial="initial"
-                animate="in"
-                exit="out"
-                variants={pageVariants}
-                transition={pageTransition}
-              >
-                <Home />
-              </motion.div>
-            }
-          />
-          <Route
-            path="/product/:id/details"
-            element={
-              <motion.div
-                initial="initial"
-                animate="in"
-                exit="out"
-                variants={pageVariants}
-                transition={pageTransition}
-              >
-                <ProductDetail />
-              </motion.div>
-            }
-          />
-          <Route
-            path="/cart"
-            element={
-              <motion.div
-                initial="initial"
-                animate="in"
-                exit="out"
-                variants={pageVariants}
-                transition={pageTransition}
-              >
-                <Cart />
-              </motion.div>
-            }
-          />
-          <Route
-            path="/order-success"
-            element={
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                <OrderSuccess />
-              </motion.div>
-            }
-          />
-        </Routes>
-      </AnimatePresence>
+      <section className="min-h-[calc(100dvh-121px)]">
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            <Route
+              path="/"
+              element={
+                <motion.div
+                  initial="initial"
+                  animate="in"
+                  exit="out"
+                  variants={pageVariants}
+                  transition={pageTransition}
+                >
+                  <Home />
+                </motion.div>
+              }
+            />
+            <Route
+              path="/product/:id/details"
+              element={
+                <motion.div
+                  initial="initial"
+                  animate="in"
+                  exit="out"
+                  variants={pageVariants}
+                  transition={pageTransition}
+                >
+                  <ProductDetail />
+                </motion.div>
+              }
+            />
+            <Route
+              path="/cart"
+              element={
+                <motion.div
+                  initial="initial"
+                  animate="in"
+                  exit="out"
+                  variants={pageVariants}
+                  transition={pageTransition}
+                >
+                  <Cart />
+                </motion.div>
+              }
+            />
+            <Route
+              path="/order-success"
+              element={
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  <OrderSuccess />
+                </motion.div>
+              }
+            />
+          </Routes>
+        </AnimatePresence>
+      </section>
       <Footer />
-    </>
+    </div>
   );
 };
 
