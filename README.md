@@ -137,8 +137,7 @@ ecommerce-app/
 ## 🎯 Next Steps
 
 * Add authentication
-* Persist cart in `sessionStorage`
-* Connect with real backend
+* Connect with real backend for cart flow
 
 ---
 
