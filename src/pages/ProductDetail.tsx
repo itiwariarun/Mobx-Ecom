@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { fetchProducts } from "../services/api";
-import { cartStore } from "../store";
+import { useCart } from "../store";
 import type { Product } from "../types";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { classNames } from "../utils";
@@ -14,6 +14,7 @@ const ProductDetail: FC = () => {
   const [quantity, setQuantity] = useState<number>(1);
   const [isAdding, setIsAdding] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const { addToCart } = useCart(); 
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -50,7 +51,7 @@ const ProductDetail: FC = () => {
     setIsAdding(true);
     setIsSuccess(false);
 
-    await cartStore.addToCart({ ...product, qty: quantity });
+    await addToCart({ ...product, qty: quantity });
 
     setTimeout(() => {
       setIsAdding(false);

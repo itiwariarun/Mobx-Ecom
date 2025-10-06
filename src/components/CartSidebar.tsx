@@ -6,43 +6,45 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { observer } from "mobx-react-lite";
-import { cartStore } from "../store";
 import { useLocation, useNavigate } from "react-router-dom";
 import BagIcon from "./icons/Bag";
+import { useCart } from "../store";
+import Ratting from "./Ratting";
 
-const CartSide: FC = observer(() => {
+const CartSide: FC = () => {
   const nav = useNavigate();
   const location = useLocation();
   const [cartOpen, setCartOpen] = useState(false);
-  const [prevCartCount, setPrevCartCount] = useState(cartStore.count);
+  const [prevCartCount, setPrevCartCount] = useState(0);
+
+  const { cart, count, total, removeFromCart } = useCart();
 
   const onClickCheckout = (router: string) => {
     setCartOpen(false);
     nav(router);
   };
+
   const isProductDetails = /^\/product\/\d+\/details$/.test(location.pathname);
 
   useEffect(() => {
-    if (cartStore.count > prevCartCount && isProductDetails) {
+    if (count > prevCartCount && isProductDetails) {
       const timeout = setTimeout(() => {
         setCartOpen(true);
       }, 1300);
       return () => clearTimeout(timeout);
     }
-    setPrevCartCount(cartStore.count);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cartStore.count, prevCartCount, isProductDetails]);
+    setPrevCartCount(count);
+  }, [count, prevCartCount, isProductDetails]);
   return (
     <>
       <button
-        data-quantity={cartStore.count}
+        data-quantity={count}
         onClick={() => setCartOpen(true)}
         className="relative btn-cart flex ml-auto items-center cursor-pointer justify-center w-12 h-12 rounded-lg bg-transparent border-none group"
       >
         <BagIcon />
         <span className="absolute top-1 mt-1 text-white text-base font-sans opacity-0 invisible transition-all duration-200 ease-linear group-hover:visible group-hover:opacity-100 group-hover:mt-0">
-          {cartStore.count}
+          {count}
         </span>
       </button>
 
@@ -85,10 +87,10 @@ const CartSide: FC = observer(() => {
                     <div className="mt-8">
                       <div className="flow-root">
                         <ul className="-my-6 divide-y divide-gray-200">
-                          {cartStore.cart.length === 0 ? (
+                          {cart.length === 0 ? (
                             <li>Your cart is empty</li>
                           ) : (
-                            cartStore.cart.map((item) => (
+                            cart.map((item) => (
                               <li key={item.id} className="flex py-6">
                                 <div className="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
                                   <img
@@ -98,25 +100,25 @@ const CartSide: FC = observer(() => {
                                   />
                                 </div>
 
-                                <div className="ml-4 flex flex-1 flex-col">
-                                  <div>
-                                    <div className="flex cursor-pointer justify-between text-base font-medium text-gray-900">
-                                      <h3>
-                                        <p
-                                          onClick={() =>
-                                            onClickCheckout(
-                                              `/product/${item.id}/details`
-                                            )
-                                          }
-                                        >
-                                          {item.title}
-                                        </p>
-                                      </h3>
-                                      <p className="ml-4">
-                                        ${item.price.toFixed(2)}
-                                      </p>
-                                    </div>
+                                <div className="ml-4 gap-0.5 flex flex-1 flex-col">
+                                  <div className="flex cursor-pointer justify-between text-base font-medium text-gray-900">
+                                    <h3>
+                                      <span
+                                        onClick={() =>
+                                          onClickCheckout(
+                                            `/product/${item.id}/details`
+                                          )
+                                        }
+                                      >
+                                        {item.title}
+                                      </span>
+                                    </h3>
+                                    <p className="ml-4">
+                                      ${item.price.toFixed(2)}
+                                    </p>
                                   </div>
+                                  <Ratting product={item} />
+
                                   <div className="flex flex-1 items-end justify-between text-sm">
                                     <p className="text-gray-500">
                                       Qty {item.qty}
@@ -126,7 +128,7 @@ const CartSide: FC = observer(() => {
                                       <button
                                         type="button"
                                         onClick={() =>
-                                          cartStore.removeFromCart(item.id)
+                                          removeFromCart(item.id)
                                         }
                                         className="font-medium cursor-pointer text-indigo-600 hover:text-indigo-500"
                                       >
@@ -143,11 +145,11 @@ const CartSide: FC = observer(() => {
                     </div>
                   </div>
 
-                  {cartStore.cart.length > 0 && (
+                  {cart.length > 0 && (
                     <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                       <div className="flex justify-between text-base font-medium text-gray-900">
                         <p>Total</p>
-                        <p>${cartStore.total.toFixed(2)}</p>
+                        <p>${total.toFixed(2)}</p>
                       </div>
                       <div className="mt-6">
                         <button
@@ -179,6 +181,6 @@ const CartSide: FC = observer(() => {
       </Dialog>
     </>
   );
-});
+};
 
 export default CartSide;

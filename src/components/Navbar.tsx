@@ -5,13 +5,12 @@ import {
   DisclosurePanel,
 } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { observer } from "mobx-react-lite";
 import CartSide from "./CartSidebar";
 import { classNames } from "../utils";
 import { FC } from "react";
 import { navigation } from "../utils/constants";
 
-const Navbar: FC = observer(() => {
+const Navbar: FC = () => {
   return (
     <Disclosure
       as="nav"
@@ -83,6 +82,6 @@ const Navbar: FC = observer(() => {
       )}
     </Disclosure>
   );
-});
+};
 
 export default Navbar;

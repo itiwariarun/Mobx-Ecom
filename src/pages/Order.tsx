@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
-import { cartStore } from "../store";
+import { useCart } from "../store";
 import { Link } from "react-router-dom";
 import { CartItem } from "../types";
 
 const OrderSuccess = () => {
   const [orderItems, setOrderItems] = useState<CartItem[]>([]);
-  const [total, setTotal] = useState<number>(0);
+  const { cart, total, clearCart } = useCart();
+  const [finalTotal, setFinalTotal] = useState<string>('0');
 
   useEffect(() => {
-    const items: CartItem[] = cartStore.cart.map((p) => ({
+    const items: CartItem[] = cart.map((p) => ({
       id: p.id,
       price: p.price || 0,
       name: p.title,
@@ -17,10 +18,10 @@ const OrderSuccess = () => {
       qty: p.qty || 1,
     }));
     setOrderItems(items);
-    setTotal(cartStore.total);
+    setFinalTotal(total.toFixed(2));
 
     setTimeout(() => {
-      cartStore.clearCart();
+      clearCart();
     }, 0);
   }, []);
 
@@ -65,15 +66,15 @@ const OrderSuccess = () => {
               key={item.id}
               className="grid grid-cols-1 md:grid-cols-2 gap-6 py-3 border-b border-gray-200"
             >
-              <div className="flex flex-col md:flex-row items-center justify-between gap-4 w-full">
-                <div className="min-w-[7.5rem] truncate h-[7.5rem] bg-gray-50 rounded-xl flex items-center justify-center">
+              <div className="flex flex-col md:flex-row items-center justify-start gap-4 w-full">
+                <div className="min-w-[7.5rem] w-[7.5rem] truncate h-[7.5rem] bg-gray-50 rounded-xl flex items-center justify-center">
                   <img
                     src={item.image || "https://via.placeholder.com/100"}
                     alt={item.title}
                     className="w-full h-full object-contain"
                   />
                 </div>
-                <div className="pro-data flex ml-auto flex-col justify-start items-start gap-2">
+                <div className="pro-data flex flex-col justify-start items-start gap-2">
                   <Link to={`/product/${item.id}/details`}>
                     <h4 className="text-black text-lg font-medium">
                       {item.title}
@@ -96,7 +97,7 @@ const OrderSuccess = () => {
                   className="text-left text-black text-lg font-medium px-10"
                   aria-label={`Price of ${item.title}`}
                 >
-                  ${item.price * (item?.qty || 1)}
+                  ${`${(item.price * (item.qty || 1)).toFixed(2)}`}
                 </h5>
               </div>
             </div>
@@ -113,7 +114,7 @@ const OrderSuccess = () => {
               className="text-gray-900 text-lg font-semibold"
               aria-live="polite"
             >
-              ${total}
+              ${finalTotal}
             </h5>
           </div>
           <div className="flex justify-between">
@@ -126,7 +127,7 @@ const OrderSuccess = () => {
               className="text-gray-900 text-lg font-semibold"
               aria-live="polite"
             >
-              ${total}
+              ${finalTotal}
             </h5>
           </div>
         </div>

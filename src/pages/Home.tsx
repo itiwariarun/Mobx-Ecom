@@ -7,7 +7,7 @@ import MobileFilters from "../components/MobileFilters";
 import Categories from "../components/Categories";
 import SortMenu from "../components/SortMenu";
 import ProductGrid from "../components/ProductGrid";
-import { useCategories } from "../components/hooks/usecategory";
+import { useCategories } from "../components/hooks/useCategory";
 
 const Home = () => {
   const navigate = useNavigate();

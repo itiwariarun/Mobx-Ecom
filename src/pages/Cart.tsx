@@ -1,14 +1,13 @@
-import { observer } from "mobx-react-lite";
-import { cartStore } from "../store";
+import { useCart } from "../store";
 import { Link, useNavigate } from "react-router-dom";
 import { MinusIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { FC } from "react";
 
-const Cart: FC = observer(() => {
+const Cart: FC = () => {
   const navigate = useNavigate();
-
-  const handleIncrement = (id: number) => cartStore.updateQuantity(id, 1);
-  const handleDecrement = (id: number) => cartStore.updateQuantity(id, -1);
+  const { cart, updateQuantity, removeFromCart, total } = useCart();
+  const handleIncrement = (id: number) => updateQuantity(id, 1);
+  const handleDecrement = (id: number) => updateQuantity(id, -1);
   const handleCheckout = () => navigate("/order-success");
 
   return (
@@ -24,11 +23,11 @@ const Cart: FC = observer(() => {
           Shopping Cart
         </h2>
 
-        {cartStore.cart.length === 0 ? (
+        {cart.length === 0 ? (
           <p className="text-center text-gray-500">Your cart is empty</p>
         ) : (
           <>
-            {cartStore.cart.map((item) => (
+            {cart.map((item) => (
               <div
                 key={item.id}
                 className="rounded-3xl cart-item border-2 border-gray-200 p-4 lg:p-8 grid grid-cols-12 mb-8 max-lg:max-w-lg max-lg:mx-auto gap-y-4"
@@ -50,7 +49,7 @@ const Cart: FC = observer(() => {
                       </Link>
                     </h5>
                     <button
-                      onClick={() => cartStore.removeFromCart(item.id)}
+                      onClick={() => removeFromCart(item.id)}
                       className="w-10 rounded-full cart-remove cursor-pointer flex items-center justify-center group hover:border-red-600 duration-300 aspect-square border border-gray-200 bg-white hover:bg-gray-50 transition"
                       aria-label={`Remove ${item.title} from cart`}
                     >
@@ -113,7 +112,7 @@ const Cart: FC = observer(() => {
                   className="font-bold text-3xl text-indigo-600"
                   aria-live="polite"
                 >
-                  ${cartStore.total.toFixed(2)}
+                  ${total.toFixed(2)}
                 </h6>
               </div>
             </div>
@@ -135,6 +134,6 @@ const Cart: FC = observer(() => {
       </div>
     </section>
   );
-});
+};
 
 export default Cart;

@@ -7,8 +7,9 @@ import ProductDetail from "./pages/ProductDetail";
 import OrderSuccess from "./pages/Order";
 import Cart from "./pages/Cart";
 import { pageTransition, pageVariants } from "./utils/constants";
+import { FC } from "react";
 
-const App: React.FC = () => {
+const App: FC = () => {
   const location = useLocation();
 
   return (

@@ -14,9 +14,6 @@
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "framer-motion": "^12.23.22",
-    "got": "^14.4.9",
-    "mobx": "^6.15.0",
-    "mobx-react": "^9.2.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.9.3",
@@ -28,7 +25,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress": "cypress open"
   },
   "eslintConfig": {
     "extends": [

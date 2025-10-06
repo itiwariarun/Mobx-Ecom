@@ -1,6 +1,6 @@
 # 🛒 React E-commerce App
 
-A simple e-commerce application built with **React + TypeScript**, **MobX** for state management, and **React Router** for navigation.
+A simple e-commerce application built with **React + TypeScript**, **ContextApi** for state management, and **React Router** for navigation.
 Includes product listing, filtering, sorting, cart management, and an order success flow.
 End-to-end tests are written with **Cypress**.
 
@@ -20,7 +20,7 @@ End-to-end tests are written with **Cypress**.
 ## 🛠️ Tech Stack
 
 * **Frontend**: React, TypeScript, Tailwind CSS, Headless UI
-* **State Management**: MobX
+* **State Management**: Context Api
 * **Routing**: React Router v6
 * **API**: Mock `fetchProducts` & `fetchCategories` services
 * **Testing**: Cypress (E2E)
@@ -31,11 +31,11 @@ End-to-end tests are written with **Cypress**.
 
 ```bash
 # Clone repository
-git clone https://github.com/itiwariarun/Mobx-Ecom.git
+git clone https://github.com/itiwariarun/Context-Ecom.git
 cd ecommerce-app
 
 # Install dependencies
-npm install
+npm install or npm i --legacy-peer-deps or npm --force
 ```
 
 ---
@@ -114,7 +114,7 @@ ecommerce-app/
 │   ├── services/            # API services
 │   │   └── api.ts
 │   │
-│   ├── store/               # MobX store
+│   ├── store/               # Context Api store
 │   │   └── index.ts
 │   │
 │   │
