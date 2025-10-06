@@ -10,22 +10,30 @@ import CartIcon from "../components/icons/Cart";
 
 const ProductDetail: FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [product, setProduct] = useState<Product | null>(null);
-  const [quantity, setQuantity] = useState<number>(1);
-  const [isAdding, setIsAdding] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [state, setState] = useState<{
+    product: Product | null;
+    quantity: number;
+    isAdding: boolean;
+    isSuccess: boolean;
+  }>({
+    product: null,
+    quantity: 1,
+    isAdding: false,
+    isSuccess: false,
+  });
   const { addToCart } = useCart(); 
 
   useEffect(() => {
     const loadProduct = async () => {
       const products = await fetchProducts();
       const prod = products.find((p) => Number(p.id) === Number(id));
-      setProduct(prod || null);
+      setState((prev) => ({ ...prev, product: prod || null }));
+      
     };
     loadProduct();
   }, [id]);
 
-  if (!product)
+  if (!state.product)
     return (
       <section
         className="py-20 px-4 sm:px-6 container mx-auto lg:px-0 max-w-7xl mx-auto"
@@ -47,16 +55,16 @@ const ProductDetail: FC = () => {
     );
 
   const handleAddToCart = async () => {
-    if (isAdding) return;
-    setIsAdding(true);
-    setIsSuccess(false);
+    if (state.isAdding) return;
+    setState((prev) => ({ ...prev, isAdding: true }));
+    setState((prev) => ({ ...prev, isSuccess: false }));
 
-    await addToCart({ ...product, qty: quantity });
+    state.product&&addToCart({ ...state.product, qty: state.quantity });
 
     setTimeout(() => {
-      setIsAdding(false);
-      setIsSuccess(true);
-      setTimeout(() => setIsSuccess(false), 1000);
+     setState((prev) => ({ ...prev, isAdding: false }));
+    setState((prev) => ({ ...prev, isSuccess: true }));
+      setTimeout(() => setState((prev) => ({ ...prev, isSuccess: false })), 1000);
     }, 1000);
   };
 
@@ -64,15 +72,15 @@ const ProductDetail: FC = () => {
     <>
       <p
         className="text-lg max-w-7xl px-6 mx-auto pt-8 capitalize font-medium text-indigo-600 mb-2"
-        aria-label={`Category: ${product.category}`}
+        aria-label={`Category: ${state.product.category}`}
       >
         <Link
-          to={`/?category=${product.category}`}
+          to={`/?category=${state.product.category}`}
           className="hover:underline underline-offset-4"
         >
-          {product.category || "General"}
+          {state.product.category || "General"}
         </Link>{" "}
-        / {product.title}
+        / {state.product.title}
       </p>
 
       <section
@@ -82,8 +90,8 @@ const ProductDetail: FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           <div className="img-box h-full truncate rounded-lg max-lg:mx-auto">
             <img
-              src={product.image}
-              alt={product.title}
+              src={state.product.image}
+              alt={state.product.title}
               className="max-lg:mx-auto hover:scale-125 duration-300 lg:ml-auto h-full object-contain cursor-pointer rounded"
             />
           </div>
@@ -101,21 +109,21 @@ const ProductDetail: FC = () => {
               id="product-title"
               className="text-3xl font-bold text-gray-900 mb-4 capitalize"
             >
-              {product.title}
+              {state.product.title}
             </h2>
 
             <div className="flex items-center gap-4 mb-4">
               <p
                 className="text-2xl font-semibold text-gray-900"
-                aria-label={`Price: $${product.price}`}
+                aria-label={`Price: $${state.product.price}`}
               >
-                ${product.price}
+                ${state.product.price}
               </p>
-              <Ratting product={product} />
+              <Ratting product={state.product} />
             </div>
 
             <p className="text-gray-500 mb-6" aria-label="Product description">
-              {product.description}
+              {state.product.description}
             </p>
 
             <div
@@ -127,7 +135,7 @@ const ProductDetail: FC = () => {
                 aria-label="Quantity selector"
               >
                 <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  onClick={() => setState({...state,quantity:Math.max(1, state.quantity - 1)})}
                   className="w-10 rounded-full cart-decrement flex items-center cursor-pointer justify-center aspect-square bg-white hover:bg-gray-50 transition"
                   aria-label="Decrease quantity"
                 >
@@ -135,14 +143,14 @@ const ProductDetail: FC = () => {
                 </button>
                 <input
                   type="text"
-                  value={quantity}
+                  value={state.quantity}
                   readOnly
                   aria-live="polite"
-                  aria-label={`Quantity: ${quantity}`}
+                  aria-label={`Quantity: ${state.quantity}`}
                   className="w-16 text-center focus:outline-none"
                 />
                 <button
-                  onClick={() => setQuantity(quantity + 1)}
+                  onClick={() => setState({...state,quantity:state.quantity + 1})}
                   className="w-10 rounded-full cart-increment flex items-center cursor-pointer justify-center aspect-square bg-white hover:bg-gray-50 transition"
                   aria-label="Increase quantity"
                 >
@@ -154,8 +162,8 @@ const ProductDetail: FC = () => {
                 onClick={handleAddToCart}
                 className={classNames(
                   "relative flex items-center cursor-pointer justify-center px-6 py-3 rounded-full font-semibold text-white bg-gradient-to-br from-indigo-600 to-indigo-800 shadow-md overflow-hidden transform transition-all duration-300",
-                  isAdding ? "opacity-80 pointer-events-none" : "",
-                  isSuccess
+                  state.isAdding ? "opacity-80 pointer-events-none" : "",
+                  state.isSuccess
                     ? "bg-gradient-to-br from-green-500 to-green-700"
                     : "",
                   "hover:scale-105 hover:shadow-lg active:scale-95"
@@ -165,13 +173,13 @@ const ProductDetail: FC = () => {
                 <span
                   className={classNames(
                     "absolute left-0 bottom-0 flex h-1 bg-white/70 transition-all",
-                    isAdding ? "w-full duration-[1000ms]" : "w-0"
+                    state.isAdding ? "w-full duration-[1000ms]" : "w-0"
                   )}
                 />
                 <span
                   className={classNames(
                     "mx-2.5 transition-transform duration-300",
-                    isSuccess ? "animate-[addedToCart_0.5s_ease-in-out]" : ""
+                    state.isSuccess ? "animate-[addedToCart_0.5s_ease-in-out]" : ""
                   )}
                   aria-hidden="true"
                 >
